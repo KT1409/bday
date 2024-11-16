@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Falling Hearts and Birthday Countdown</title>
+  <link href="https://fonts.googleapis.com/css2?family=VeryBerry&family=Kite+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    /* Falling hearts animation */
+    .heart {
+      position: absolute;
+      top: -50px;
+      font-size: 30px;
+      opacity: 0;
+      animation: fall 8s linear forwards;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Hide the background initially */
+    .birthdayimg {
+      background-image: url('https://cdn.pixabay.com/photo/2018/02/23/21/29/roses-frame-3176667_960_720.jpg');
+      height: 100%;
+      background-position: center;
+      background-size: cover;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      z-index: -1;
+      opacity: 0; /* Hidden initially */
+      transition: opacity 2s ease-in-out; /* Fade-in transition */
+    }
+
+    /* Centered content */
+    .middle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #f5a623;
+      display: none; /* Hidden initially */
+    }
+
+    h1 {
+      font-family: 'VeryBerry', cursive;
+      font-size: 50px;
+      color: #f5a623;
+    }
+
+    p {
+      font-family: 'Kite One', sans-serif;
+      font-size: 50px;
+      font-weight: bold;
+      color: #f5a623;
+    }
+
+    hr {
+      margin: auto;
+      width: 40%;
+      border: 1px solid #f5a623;
+    }
+
+    /* Style for cat photos container */
+    .image-container {
+      display: flex;
+      justify-content: center; /* Center images horizontally */
+      align-items: center; /* Align images vertically */
+      flex-wrap: nowrap; /* No wrapping, all images in a single line */
+      position: absolute;
+      top: 50%; /* Center vertically */
+      left: 50%; /* Center horizontally */
+      transform: translate(-50%, -50%); /* Offset the container to be exactly in the center */
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
+
+    .image-container img {
+      width: 200px; /* Set width for the images */
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background for the countdown -->
+<div class="birthdayimg" id="backgroundImage"></div>
+
+<!-- Centered message content -->
+<div class="middle" id="message">
+  <h1>Ready for the Surprise?</h1>
+  <hr>
+  <p id="countdown"></p>
+</div>
+
+<script>
+  // Heart emoji falling effect
+  const hearts = ['❤️', '💖', '💘', '💝', '💕', '💓'];
+  const numberOfHearts = 30;
+
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    
+    // Randomize initial position and fixed animation duration (8 seconds)
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDelay = Math.random() * 1 + 's';  // Random delay for each heart
+
+    document.body.appendChild(heart);
+
+    // Remove the heart element after the animation is complete
+    heart.addEventListener('animationend', () => {
+      heart.remove();
+    });
+  }
+
+  // Create multiple hearts
+  for (let i = 0; i < numberOfHearts; i++) {
+    setTimeout(createHeart, i * 300); // Create hearts at different intervals
+  }
+
+  // Cat photos to be displayed after the heart animation
+  const catPhotos = [
+    "C://Users//KARTHIKA//Downloads//very cute cat 👀.jpg", 
+    "C://Users//KARTHIKA//Downloads//Mèo cute.jpg", 
+    "C://Users//KARTHIKA//Downloads//c78b3951-7214-499d-b9f8-bba07c976632.jpg", 
+    "C://Users//KARTHIKA//Downloads//14884c19-b08c-4c13-bc84-7bf7527ec4d9.jpg", 
+    "C://Users//KARTHIKA//Downloads//♥️.jpg"
+  ];
+
+  // Function to show the cat photos
+  function showCatPhotos() {
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add('image-container');
+    document.body.appendChild(imageContainer);
+
+    catPhotos.forEach((src, index) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `Cute Cat ${index + 1}`;
+      imageContainer.appendChild(img);
+    });
+
+    // Show the image container with a fade-in effect
+    setTimeout(() => {
+      imageContainer.style.opacity = '1'; // Fade in
+    }, 100);
+
+    // Hide the cat photos after 5 seconds (cat photos visible for 5 seconds)
+    setTimeout(() => {
+      imageContainer.style.opacity = '0'; // Fade out
+    }, 5000);
+  }
+
+  // Trigger the appearance of cat photos after all hearts have fallen (8 seconds)
+  setTimeout(showCatPhotos, 8000);
+
+  // Birthday countdown
+  var countDownDate = new Date("Nov 17, 2024 00:00:00").getTime();
+
+  var countdownfunction = setInterval(function () {
+    var now = new Date().getTime();
+    var distance = countDownDate - now;
+
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Update countdown
+    document.getElementById("countdown").innerHTML =
+      days + "D " + hours + "H " + minutes + "M " + seconds + "S ";
+
+    if (distance < 0) {
+      clearInterval(countdownfunction);
+      document.getElementById("countdown").innerHTML = "HAPPY BIRTHDAY SUSHUUU!";
+    }
+  }, 1000);
+
+  // After everything, show the background and countdown
+  setTimeout(() => {
+    document.getElementById('backgroundImage').style.opacity = '1'; // Fade in background after cat photos
+    document.getElementById('message').style.display = 'block'; // Show the countdown and message
+  }, 14000); // 14 seconds after starting to display the countdown (8s hearts + 5s cat photos + 1s buffer)
+</script>
+
+</body>
+</html>
